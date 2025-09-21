@@ -54,7 +54,7 @@ class ProfilePage extends StatelessWidget {
 
               // 2. Nama Pengguna
               const Text(
-                'Rizqi Rifa Amarulloh',
+                'Rizqi Rifah Amarulloh',
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,

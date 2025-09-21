@@ -4,6 +4,7 @@ import '../pages/home_page.dart';
 import '../pages/second_page.dart';
 import '../pages/about_page.dart';
 import '../pages/contact_page.dart';
+import '../pages/props_page.dart';
 
 class CustomDrawer extends StatelessWidget {
   @override
@@ -12,7 +13,7 @@ class CustomDrawer extends StatelessWidget {
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
-          const DrawerHeader(
+          DrawerHeader(
             decoration: BoxDecoration(color: Colors.blue),
             child: Text(
               'Menu Navigasi',
@@ -20,8 +21,8 @@ class CustomDrawer extends StatelessWidget {
             ),
           ),
           ListTile(
-            leading: const Icon(Icons.home, color: Colors.blue),
-            title: const Text('Beranda', style: TextStyle(color: Colors.black)),
+            leading: Icon(Icons.home, color: Colors.blue),
+            title: Text('Beranda', style: TextStyle(color: Colors.black)),
             onTap: () {
               Navigator.pop(context);
               Navigator.push(
@@ -31,8 +32,8 @@ class CustomDrawer extends StatelessWidget {
             }
           ),
           ListTile(
-              leading: const Icon(Icons.shopping_cart, color: Colors.blue),
-              title: const Text('Keranjang', style: TextStyle(color: Colors.black)),
+              leading: Icon(Icons.shopping_cart, color: Colors.blue),
+              title: Text('Keranjang', style: TextStyle(color: Colors.black)),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.push(
@@ -42,8 +43,8 @@ class CustomDrawer extends StatelessWidget {
               }
             ),
           ListTile(
-            leading: const Icon(Icons.person, color: Colors.blue),
-            title: const Text('Profil', style: TextStyle(color: Colors.black)),
+            leading: Icon(Icons.person, color: Colors.blue),
+            title: Text('Profil', style: TextStyle(color: Colors.black)),
             onTap: () {
               Navigator.pop(context);
               Navigator.push(
@@ -53,8 +54,8 @@ class CustomDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.info, color: Colors.blue),
-            title: const Text('Tentang Aplikasi', style: TextStyle(color: Colors.black)),
+            leading: Icon(Icons.info, color: Colors.blue),
+            title: Text('Tentang Aplikasi', style: TextStyle(color: Colors.black)),
             onTap: () {
               Navigator.pop(context);
               Navigator.push(
@@ -64,8 +65,8 @@ class CustomDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.contact_mail, color: Colors.blue),
-            title: const Text('Kontak Kami', style: TextStyle(color: Colors.black)),
+            leading: Icon(Icons.contact_mail, color: Colors.blue),
+            title: Text('Kontak Kami', style: TextStyle(color: Colors.black)),
             onTap: () {
               Navigator.pop(context);
               Navigator.push(
@@ -75,8 +76,8 @@ class CustomDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.add, color: Colors.blue),
-            title: const Text(
+            leading: Icon(Icons.add, color: Colors.blue),
+            title: Text(
               'Counter Page',
               style: TextStyle(color: Colors.black),
             ),
@@ -84,6 +85,17 @@ class CustomDrawer extends StatelessWidget {
               Navigator.pop(context);
             },
           ),
+          ListTile(
+              leading: Icon(Icons.person, color: Colors.blue),
+              title: Text('Props Page', style: TextStyle(color: Colors.black)),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => PropsPage(name: "Rizqi", age: 20, isActive: true)),
+                );
+              }
+            ),
         ],
       ),
     );

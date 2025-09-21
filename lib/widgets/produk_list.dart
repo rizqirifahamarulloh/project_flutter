@@ -23,6 +23,7 @@ class ProductList extends StatelessWidget {
           return ProductCard(
             name: product['name'],
             price: product['price'],
+            description: product['description'] ?? '',
             imageUrl: product['image'],
             isFavorite: product['isFavorite'],
             onFavoritePressed: () {

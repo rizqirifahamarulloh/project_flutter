@@ -1,8 +1,10 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 
 class ProductCard extends StatelessWidget {
   final String name;
   final String price;
+  final String description;
   final String imageUrl;
   final bool isFavorite;
   final VoidCallback onFavoritePressed;
@@ -11,6 +13,7 @@ class ProductCard extends StatelessWidget {
     Key? key,
     required this.name,
     required this.price,
+    required this.description,
     required this.imageUrl,
     required this.isFavorite,
     required this.onFavoritePressed,
@@ -26,16 +29,25 @@ class ProductCard extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: const BorderRadius.vertical(top: Radius.circular(10.0)),
-            child: SizedBox(
-              height: 150, // Give a fixed height
-              child: Image.network(
-                imageUrl,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) {
-                  return const Icon(Icons.image_not_supported,
-                      size: 50, color: Colors.grey);
-                },
-              ),
+            child: AspectRatio(
+              aspectRatio: 16 / 9,
+              child: imageUrl.startsWith('http')
+                  ? Image.network(
+                      imageUrl,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return const Icon(Icons.image_not_supported,
+                            size: 50, color: Colors.grey);
+                      },
+                    )
+                  : Image.file(
+                      File(imageUrl),
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return const Icon(Icons.image_not_supported,
+                            size: 50, color: Colors.grey);
+                      },
+                    ),
             ),
           ),
           Padding(
@@ -51,8 +63,12 @@ class ProductCard extends StatelessWidget {
                               fontWeight: FontWeight.bold, fontSize: 16)),
                       const SizedBox(height: 4),
                       Text(price,
-                          style:
-                              TextStyle(color: Colors.grey[700], fontSize: 14)),
+                          style: const TextStyle(
+                              color: Colors.grey, fontSize: 14)),
+                      const SizedBox(height: 4),
+                      Text(description,
+                          style: const TextStyle(
+                              color: Colors.grey, fontSize: 12)),
                     ],
                   ),
                 ),

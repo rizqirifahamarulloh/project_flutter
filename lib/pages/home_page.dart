@@ -3,6 +3,7 @@ import '../data/produk_data.dart';
 import '../widgets/costum_drawer.dart';
 import '../widgets/search_field.dart';
 import '../widgets/produk_list.dart';
+import '../widgets/add_button.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -12,6 +13,12 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   List<Map<String, dynamic>> _allProducts = [];
   List<Map<String, dynamic>> _filteredProducts = [];
+  void _addProduct(Map<String, dynamic> newProduct) {
+    setState(() {
+      _allProducts.add(newProduct);
+      _filteredProducts = List.from(_allProducts);
+    });
+  }
 
   @override
   void initState() {
@@ -59,6 +66,7 @@ class _HomePageState extends State<HomePage> {
           )
         ],
       ),
+      floatingActionButton: AddProductButton(onProductAdded: _addProduct),
     );
   }
 }
