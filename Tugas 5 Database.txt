@@ -1,0 +1,157 @@
+Link Github
+https://github.com/rizqirifahamarulloh/project_flutter/tree/database
+
+mysql> CREATE DATABASE dbpos1;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> USE dbpos1;
+Database changed
+mysql> CREATE TABLE jenis_produk (
+    ->   id INT AUTO_INCREMENT PRIMARY KEY,
+    ->   nama VARCHAR(100) NOT NULL
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> CREATE TABLE kartu (
+    ->   id INT AUTO_INCREMENT PRIMARY KEY,
+    ->   kode VARCHAR(10) NOT NULL UNIQUE,
+    ->   nama VARCHAR(100) NOT NULL,
+    ->   diskon DECIMAL(5,2) DEFAULT 0.00,
+    ->   iuran DECIMAL(12,2) DEFAULT 0.00
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> CREATE TABLE pelanggan (
+    ->   id INT AUTO_INCREMENT PRIMARY KEY,
+    ->   kode VARCHAR(20) NOT NULL UNIQUE,
+    ->   nama VARCHAR(150) NOT NULL,
+    ->   jk CHAR(1),
+    ->   tmp_lahir VARCHAR(100),
+    ->   tgl_lahir DATE,
+    ->   email VARCHAR(150),
+    ->   kartu_id INT,
+    ->   FOREIGN KEY (kartu_id) REFERENCES kartu(id)
+    -> );
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> CREATE TABLE vendor (
+    ->   id INT AUTO_INCREMENT PRIMARY KEY,
+    ->   nomor VARCHAR(20) UNIQUE,
+    ->   nama VARCHAR(150) NOT NULL,
+    ->   kota VARCHAR(100),
+    ->   kontak VARCHAR(100)
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> CREATE TABLE produk (
+    ->   id INT AUTO_INCREMENT PRIMARY KEY,
+    ->   kode VARCHAR(20) NOT NULL UNIQUE,
+    ->   nama VARCHAR(150) NOT NULL,
+    ->   harga_beli DECIMAL(12,2),
+    ->   harga_jual DECIMAL(12,2),
+    ->   stok INT DEFAULT 0,
+    ->   min_stok INT DEFAULT 0,
+    ->   jenis_produk_id INT,
+    ->   FOREIGN KEY (jenis_produk_id) REFERENCES jenis_produk(id)
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> CREATE TABLE pesanan (
+    ->   id INT AUTO_INCREMENT PRIMARY KEY,
+    ->   tanggal DATE NOT NULL,
+    ->   total DECIMAL(12,2) DEFAULT 0.00,
+    ->   pelanggan_id INT,
+    ->   FOREIGN KEY (pelanggan_id) REFERENCES pelanggan(id)
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> CREATE TABLE pesanan_items (
+    ->   id INT AUTO_INCREMENT PRIMARY KEY,
+    ->   produk_id INT,
+    ->   pesanan_id INT,
+    ->   qty INT,
+    ->   harga DECIMAL(12,2),
+    ->   FOREIGN KEY (produk_id) REFERENCES produk(id),
+    ->   FOREIGN KEY (pesanan_id) REFERENCES pesanan(id)
+    -> );
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> CREATE TABLE pembelian (
+    ->   id INT AUTO_INCREMENT PRIMARY KEY,
+    ->   tanggal DATE NOT NULL,
+    ->   nomor VARCHAR(50) UNIQUE,
+    ->   produk_id INT,
+    ->   jumlah INT,
+    ->   harga DECIMAL(12,2),
+    ->   vendor_id INT,
+    ->   FOREIGN KEY (produk_id) REFERENCES produk(id),
+    ->   FOREIGN KEY (vendor_id) REFERENCES vendor(id)
+    -> );
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> CREATE TABLE pembayaran (
+    ->   id INT AUTO_INCREMENT PRIMARY KEY,
+    ->   nokuitansi VARCHAR(50) UNIQUE,
+    ->   tanggal DATE NOT NULL,
+    ->   jumlah DECIMAL(12,2),
+    ->   ke INT,
+    ->   pesan_id INT,
+    ->   status_pembayaran VARCHAR(25),
+    ->   FOREIGN KEY (pesan_id) REFERENCES pesanan(id)
+    -> );
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> INSERT INTO jenis_produk (nama) VALUES
+    -> ('ATK'), ('Buku Tulis'), ('Peralatan Kantor');
+Query OK, 3 rows affected (0.02 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO kartu (kode, nama, diskon, iuran) VALUES
+    -> ('SLV', 'Silver', 2.5, 25000),
+    -> ('GLD', 'Gold', 5.0, 50000),
+    -> ('PLT', 'Platinum', 10.0, 100000);
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO pelanggan (kode, nama, jk, tmp_lahir, tgl_lahir, email, kartu_id) VALUES
+    -> ('CUST001', 'Andi Wijaya', 'L', 'Jakarta', '1995-01-01', 'andi@example.com', 1),
+    -> ('CUST002', 'Budi Santoso', 'L', 'Depok', '1996-02-02', 'budi@example.com', 2);
+Query OK, 2 rows affected (0.01 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO vendor (nomor, nama, kota, kontak) VALUES
+    -> ('V001', 'PT Sumber Makmur', 'Jakarta', 'Ibu Rina'),
+    -> ('V002', 'CV Alat Tulis', 'Bogor', 'Pak Dedi');
+Query OK, 2 rows affected (0.01 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO produk (kode, nama, harga_beli, harga_jual, stok, min_stok, jenis_produk_id) VALUES
+    -> ('PRD001', 'Pulpen Biru', 3000, 5000, 100, 10, 1),
+    -> ('PRD002', 'Buku A5', 8000, 12000, 75, 5, 2),
+    -> ('PRD003', 'Stapler Mini', 15000, 22000, 40, 5, 3);
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO pesanan (tanggal, total, pelanggan_id) VALUES
+    -> ('2025-10-01', 70000, 1),
+    -> ('2025-10-02', 44000, 2);
+Query OK, 2 rows affected (0.01 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO pesanan_items (produk_id, pesanan_id, qty, harga) VALUES
+    -> (1, 1, 10, 5000),
+    -> (2, 1, 1, 12000),
+    -> (3, 2, 2, 22000);
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO pembelian (tanggal, nomor, produk_id, jumlah, harga, vendor_id) VALUES
+    -> ('2025-09-20', 'PO-0001', 1, 200, 3200, 1),
+    -> ('2025-09-22', 'PO-0002', 3, 50, 18000, 2);
+Query OK, 2 rows affected (0.01 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> INSERT INTO pembayaran (nokuitansi, tanggal, jumlah, ke, pesan_id, status_pembayaran) VALUES
+    -> ('KW-001', '2025-09-21', 200000, 1, 1, 'Belum Lunas');
+Query OK, 1 row affected (0.00 sec)
